@@ -12,8 +12,7 @@ public enum ProcGenTypes
 public class Board : MonoBehaviour
 {
     private GameState gameState;
-    public GameObject lightTilePrefab;
-    public GameObject darkTilePrefab;
+    public GameObject tilePrefab;
     public GameObject lightBlockPrefab;
     public GameObject redUnit;
     public GameObject blueUnit;
@@ -25,7 +24,6 @@ public class Board : MonoBehaviour
     {
         gameState = new GameState(boardWidth, boardHeight, procGen, 4);
         Draw();
-        
     }
 
     // Update is called once per frame
@@ -34,45 +32,39 @@ public class Board : MonoBehaviour
         
     }
 
-    void Draw()
+    public void Draw()
     {
+        GameObject[] redrawObjects = GameObject.FindGameObjectsWithTag("Drawable");
+        foreach (GameObject go in redrawObjects) Destroy(go);
+
          for(int x = 0; x < gameState.Width; x++)
          {
             for(int z = 0; z < gameState.Height; z++)
             {
-                //ALTERNATIVE DARK AND LIGHT TILES
+                //BASE TILES
                 float y = 0f;
-                if(x % 2 == 0)
+                GameObject go = Instantiate(tilePrefab, new Vector3(x, y, z), Quaternion.identity);
+                go.name = "Tile" + x + z;
+
+                //POSSILBE MOVES
+                if (gameState.Tiles[x, z].possibleMove == Teams.RED)
                 {
-                    if (z % 2 == 0)
-                    {
-                        Instantiate(lightTilePrefab, new Vector3(x, y, z), Quaternion.identity);
-                    } 
-                    else
-                    {
-                        Instantiate(darkTilePrefab, new Vector3(x, y, z), Quaternion.identity);
-                    }
+                    Renderer renderer = go.GetComponent<Renderer>();
+                    renderer.material.SetColor("_Color", Color.red * 0.75f);
                 }
-                else
+                else if (gameState.Tiles[x, z].possibleMove == Teams.BLUE) 
                 {
-                    if (z % 2 != 0)
-                    {
-                        Instantiate(lightTilePrefab, new Vector3(x, y, z), Quaternion.identity);
-                    }
-                    else
-                    {
-                        Instantiate(darkTilePrefab, new Vector3(x, y, z), Quaternion.identity);
-                    }
+                    Renderer renderer = go.GetComponent<Renderer>();
+                    renderer.material.SetColor("_Color", Color.blue * 0.75f);
                 }
-                
+            
                 //LIGHT BLOCKERS
                 if(gameState.Tiles[x,z].lightValue)
                 {
                    Instantiate(lightBlockPrefab, new Vector3(x, 9f , z), Quaternion.identity);
+
                 }
 
-
-                GameObject go = new GameObject();
                 //Units
                 if (gameState.Tiles[x, z].unit.team == Teams.RED)
                 {
@@ -84,10 +76,23 @@ public class Board : MonoBehaviour
                     go = Instantiate(blueUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
                     go.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = gameState.Tiles[x, z].unit.energy.ToString();
                 }
-                
+
+             
 
             }
          }
 
+    }
+
+    public void SetTileColor(int x, int z, Color color)
+    {
+        GameObject go = GameObject.Find("Tile" + x.ToString() + z.ToString());
+        Renderer renderer = go.GetComponent<Renderer>();
+        renderer.material.SetColor("_Color", color);
+    }
+
+      public GameState GetGameState()
+    {
+        return gameState;
     }
 }

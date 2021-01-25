@@ -153,14 +153,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee99ca0c79b7f34798f2ec385104d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTilePrefab: {fileID: 3038935847320661561, guid: 8d223ea8f2b15484ebfda5b1f028e99c, type: 3}
-  darkTilePrefab: {fileID: 3038935847320661561, guid: 8d223ea8f2b15484ebfda5b1f028e99c, type: 3}
+  tilePrefab: {fileID: 3038935847320661561, guid: 8d223ea8f2b15484ebfda5b1f028e99c, type: 3}
   lightBlockPrefab: {fileID: 121754711551962648, guid: 11d48d55f20d5eb4caa61a832b785f58, type: 3}
   redUnit: {fileID: 3814430134101995189, guid: 00c6e461e7cc69340b2d0a80347f0ce7, type: 3}
   blueUnit: {fileID: 6655748578926189345, guid: 5751f6e1139768746a513c5b6cf650a2, type: 3}
   boardWidth: 8
   boardHeight: 8
-  procGen: 1
+  procGen: 0
 --- !u!4 &175995357
 Transform:
   m_ObjectHideFlags: 0
@@ -323,7 +322,7 @@ BoxCollider:
   m_GameObject: {fileID: 935586005}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

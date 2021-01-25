@@ -19,6 +19,7 @@ public struct Tile
 {
     public bool lightValue;
     public Unit unit;
+    public Teams possibleMove;
 }
 public class GameState : ScriptableObject
 {
@@ -38,6 +39,7 @@ public class GameState : ScriptableObject
             {
                 Tiles[x, y].unit.energy = startingEnergy;
                 Tiles[x, y].unit.team = Teams.NONE;
+                Tiles[x, y].possibleMove = Teams.NONE;
             }
         }
 
@@ -72,7 +74,7 @@ public class GameState : ScriptableObject
             {
                 for(int y = 0; y < Height; y++)
                 {
-                    if(Random.Range(0f,1f) >= 0.5f)
+                    if(Random.Range(0f,1f) >= 0.25f)
                     {
                         Tiles[x, y].lightValue = true;
                     }
@@ -94,6 +96,55 @@ public class GameState : ScriptableObject
         {
             Tiles[x, Height - 1].unit.team = Teams.BLUE;
         }
+        
     }
+
+    public void ClearPossibleMoves()
+    {
+        for(int x = 0; x < Width; x++)
+            {
+                for(int y = 0; y < Height; y++)
+                {
+                    Tiles[x, y].possibleMove = Teams.NONE;
+                }
+            }
+
+    }
+
+    public void SetPossibleMoves(int x, int z, Teams team, int energy)
+    {
+        //CLEAR CURRENT MOVES
+        ClearPossibleMoves();
+
+        //NORTHERN PATH
+        for (int t = z; t < z + energy; t++) 
+        {
+            if (t < 0 || t >= Height) break;
+            Tiles[x, t].possibleMove = team;
+        }
+        //SOUTHERN PATH
+        for (int t = z; t > z - energy; t--) 
+        {
+            if (t < 0 || t >= Height) break;
+            Tiles[x, t].possibleMove = team;
+
+        }
+        //EASTERN PATH
+        for (int t = x; t < x + energy; t++) 
+        {
+            if (t < 0 || t >= Width) break;
+            Tiles[t, z].possibleMove = team;
+        }
+        //WESTERN PATH
+        for (int t = x; t > x - energy; t--) 
+        {
+            if (t < 0 || t >= Width) break;
+            Tiles[t, z].possibleMove = team;
+        }
+    }
+
+
+
+    
 
 }
