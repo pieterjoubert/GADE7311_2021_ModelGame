@@ -14,6 +14,8 @@ public class Board : MonoBehaviour
     public GameObject lightTilePrefab;
     public GameObject darkTilePrefab;
     public GameObject lightBlockPrefab;
+    public GameObject redUnit;
+    public GameObject blueUnit;
     public int boardWidth;
     public int boardHeight;
     public ProcGenTypes procGen;
@@ -21,10 +23,23 @@ public class Board : MonoBehaviour
     void Start()
     {
         gameState = new GameState(boardWidth, boardHeight, procGen);
+        Draw();
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    void Draw()
+    {
          for(int x = 0; x < gameState.Width; x++)
          {
             for(int z = 0; z < gameState.Height; z++)
             {
+                //ALTERNATIVE DARK AND LIGHT TILES
                 float y = 0f;
                 if(x % 2 == 0)
                 {
@@ -36,7 +51,6 @@ public class Board : MonoBehaviour
                     {
                         Instantiate(darkTilePrefab, new Vector3(x, y, z), Quaternion.identity);
                     }
-                     
                 }
                 else
                 {
@@ -49,22 +63,26 @@ public class Board : MonoBehaviour
                         Instantiate(darkTilePrefab, new Vector3(x, y, z), Quaternion.identity);
                     }
                 }
-
+                
+                //LIGHT BLOCKERS
                 if(gameState.Tiles[x,z].lightValue)
+                {
                    Instantiate(lightBlockPrefab, new Vector3(x, 9f , z), Quaternion.identity);
-                 /*    Renderer renderer = go.GetComponent<Renderer> ();
-                    Material mat = renderer.material;
-                Color baseColor = mat.color;
-                baseColor.a = 1f - gameState.Tiles[x, z].lightValue;
-                mat.SetColor("_Color", baseColor);*/
+                }
+
+
+                //Units
+                if (gameState.Tiles[x, z].unit.team == Teams.RED)
+                {
+                    Instantiate(redUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                }
+                else if (gameState.Tiles[x, z].unit.team == Teams.BLUE)
+                { 
+                    Instantiate(blueUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                }
+
             }
          }
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-   }
+}

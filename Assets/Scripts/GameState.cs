@@ -40,7 +40,9 @@ public class GameState : ScriptableObject
                 Tiles[x, y].unit.team = Teams.NONE;
             }
         }
+
         ProceduralGeneration(procGen);
+        PlacePieces();
     }
 
      void ProceduralGeneration(ProcGenTypes procGen)
@@ -78,6 +80,20 @@ public class GameState : ScriptableObject
             }
         }
 
+    }
+
+    void PlacePieces()
+    {
+
+        for (int x = 0; x < Width; x++)
+        {
+            Tiles[x, 0].unit.team = Teams.RED;
+        }
+
+        for (int x = 0; x < Width; x++)
+        {
+            Tiles[x, Height - 1].unit.team = Teams.BLUE;
+        }
     }
 
 }

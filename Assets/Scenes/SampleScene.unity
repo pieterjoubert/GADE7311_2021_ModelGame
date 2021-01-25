@@ -156,6 +156,8 @@ MonoBehaviour:
   lightTilePrefab: {fileID: 3038935847320661561, guid: 8d223ea8f2b15484ebfda5b1f028e99c, type: 3}
   darkTilePrefab: {fileID: 7632279538153688123, guid: 1584bf80cb13ec0488d4163323f5a074, type: 3}
   lightBlockPrefab: {fileID: 121754711551962648, guid: 11d48d55f20d5eb4caa61a832b785f58, type: 3}
+  redUnit: {fileID: 3814430134101995189, guid: 00c6e461e7cc69340b2d0a80347f0ce7, type: 3}
+  blueUnit: {fileID: 6655748578926189345, guid: 5751f6e1139768746a513c5b6cf650a2, type: 3}
   boardWidth: 8
   boardHeight: 8
   procGen: 0
@@ -355,13 +357,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 3, y: 5, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &1298994690
 GameObject:
   m_ObjectHideFlags: 0
