@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum ProcGenTypes
 {
@@ -22,7 +23,7 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameState = new GameState(boardWidth, boardHeight, procGen);
+        gameState = new GameState(boardWidth, boardHeight, procGen, 4);
         Draw();
         
     }
@@ -71,15 +72,19 @@ public class Board : MonoBehaviour
                 }
 
 
+                GameObject go = new GameObject();
                 //Units
                 if (gameState.Tiles[x, z].unit.team == Teams.RED)
                 {
-                    Instantiate(redUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                    go = Instantiate(redUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                    go.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = gameState.Tiles[x, z].unit.energy.ToString();
                 }
                 else if (gameState.Tiles[x, z].unit.team == Teams.BLUE)
                 { 
-                    Instantiate(blueUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                    go = Instantiate(blueUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
+                    go.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = gameState.Tiles[x, z].unit.energy.ToString();
                 }
+                
 
             }
          }

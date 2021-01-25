@@ -27,7 +27,7 @@ public class GameState : ScriptableObject
     public int Width { get; set; }
     public int Height { get; set; }
     public ProcGenTypes ProcGen { get; set; }
-    public GameState(int width, int height, ProcGenTypes procGen)
+    public GameState(int width, int height, ProcGenTypes procGen, int startingEnergy)
     {
         Width = width;
         Height = height;
@@ -36,7 +36,7 @@ public class GameState : ScriptableObject
         {
             for(int y = 0; y < Height; y++)
             {
-                Tiles[x, y].unit.energy = 0;
+                Tiles[x, y].unit.energy = startingEnergy;
                 Tiles[x, y].unit.team = Teams.NONE;
             }
         }
