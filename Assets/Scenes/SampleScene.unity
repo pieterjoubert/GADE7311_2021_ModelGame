@@ -184,10 +184,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 175995355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95233d2610bc8b74bb5004dbabf6ecb4, type: 3}
+  m_Script: {fileID: 11500000, guid: ff6ba956bcdaebc4f8253613971d4227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTilePrefab: {fileID: 121754711551962648, guid: 11d48d55f20d5eb4caa61a832b785f58, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameState = new GameState(boardWidth, boardHeight, procGen, 4);
+        gameState = new GameState(boardWidth, boardHeight, procGen, 6);
         Draw();
     }
 
@@ -76,23 +76,24 @@ public class Board : MonoBehaviour
                     go = Instantiate(blueUnit, new Vector3(x, y + 0.5f, z), Quaternion.identity);
                     go.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = gameState.Tiles[x, z].unit.energy.ToString();
                 }
-
-             
-
             }
          }
 
     }
 
-    public void SetTileColor(int x, int z, Color color)
+    /*public void SetTileColor(int x, int z, Color color)
     {
         GameObject go = GameObject.Find("Tile" + x.ToString() + z.ToString());
         Renderer renderer = go.GetComponent<Renderer>();
         renderer.material.SetColor("_Color", color);
-    }
+    }*/
 
-      public GameState GetGameState()
+    public GameState GetGameState()
     {
         return gameState;
+    }
+    public void SetGameState(GameState _gameState)
+    {
+        gameState = _gameState;
     }
 }

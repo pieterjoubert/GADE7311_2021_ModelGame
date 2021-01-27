@@ -18,13 +18,13 @@ public class UnitSelected : MonoBehaviour
     }
 
     void OnMouseDown()
-    {
+    { 
+            Board board = GameObject.Find("Board").GetComponent<Board>();
+            int x = Convert.ToInt32(gameObject.name.Substring(4,1));
+            int z = Convert.ToInt32(gameObject.name.Substring(5,1));
+            Tile tile = board.GetGameState().Tiles[x, z];
+            GameManager gameManager = GameObject.Find("Board").GetComponent<GameManager>();
+            gameManager.TakeTurn(tile, x, z);
 
-        Board board = GameObject.Find("Board").GetComponent<Board>();
-        int x = Convert.ToInt32(gameObject.name.Substring(4,1));
-        int z = Convert.ToInt32(gameObject.name.Substring(5,1));
-        Tile tile = board.GetGameState().Tiles[x, z];
-        board.GetGameState().SetPossibleMoves(x, z, tile.unit.team, tile.unit.energy);
-        board.Draw();
     }  
 }
