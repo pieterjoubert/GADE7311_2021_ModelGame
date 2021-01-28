@@ -13,14 +13,14 @@ public class RandomAIPlayer : ScriptableObject, IAIPlayable
         {
             for(int y = 0; y < gameState.Height; y++)
             {
-                if(gameState.Tiles[x,y].unit.team == team)
+                if(gameState.Tiles[x,y].unit.team == team && gameState.Tiles[x,y].unit.energy > 0)
                 {
                     possibleTiles.Add(gameState.Tiles[x, y]);
                 }
             }
         }
 
-        int chosenPos = Random.Range(0, 8);
+        int chosenPos = Random.Range(0, possibleTiles.Count);
         Tile chosenTile = possibleTiles[chosenPos];
         gameState.SetPossibleMoves(chosenTile.x, chosenTile.y, team, chosenTile.unit.energy);
 
@@ -40,9 +40,9 @@ public class RandomAIPlayer : ScriptableObject, IAIPlayable
 
         chosenPos = Random.Range(0, possibleMoves.Count);
         Tile moveToTile = possibleMoves[chosenPos];
-        Debug.Log("Chosen x,y: " + moveToTile.x + ", " + moveToTile.y);
+        //Debug.Log("Chosen x,y: " + moveToTile.x + ", " + moveToTile.y);
         gameState.Move(moveToTile.x, moveToTile.y);
-        Debug.Log("Move gameState team: " + gameState.Tiles[moveToTile.x, moveToTile.y].unit.team);
+        //Debug.Log("Move gameState team: " + gameState.Tiles[moveToTile.x, moveToTile.y].unit.team);
 
         return gameState;
     }

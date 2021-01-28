@@ -32,6 +32,8 @@ public class GameState : ScriptableObject
     public ProcGenTypes ProcGen { get; set; }
     public int SelectedX { get; set; }
     public int SelectedZ { get; set; }
+    public int RedScore { get; set; }
+    public int BlueScore { get; set; }
     public GameState(int width, int height, ProcGenTypes procGen, int startingEnergy)
     {
         Width = width;
@@ -63,11 +65,11 @@ public class GameState : ScriptableObject
                 {
                     if(x > 2 && x < 5 && y > 2 && y < 5)
                     {
-                        Tiles[x, y].lightValue = false;
+                        Tiles[x, y].lightValue = true;
                     }
                     else
                     {
-                        Tiles[x, y].lightValue = true;
+                        Tiles[x, y].lightValue = false;
                     }
                 }
             }
@@ -78,7 +80,7 @@ public class GameState : ScriptableObject
             {
                 for(int y = 0; y < Height; y++)
                 {
-                    if(Random.Range(0f,1f) >= 0.25f)
+                    if(Random.Range(0f,1f) <= 0.25f)
                     {
                         Tiles[x, y].lightValue = true;
                     }
@@ -226,8 +228,46 @@ public class GameState : ScriptableObject
             }
 
         }
-
+        UpdateEnergy();
+        UpdateScore();
+        Debug.Log("BLUE SCORE: " + BlueScore);
+        Debug.Log("RED SCORE: " + RedScore);
         ClearPossibleMoves();
+    }
+    public void UpdateEnergy()
+    { 
+        for(int x = 0; x < Width; x++)
+        {
+            for(int y = 0; y < Height; y++)
+            {
+                if(Tiles[x,y].lightValue)
+                {
+                    Tiles[x,y].unit.energy++;
+                }
+            }
+        }
+    }
+
+    public void UpdateScore()
+    {
+        BlueScore = 0;
+        RedScore = 0;
+
+        for(int x = 0; x < Width; x++)
+        {
+            for(int y = 0; y < Height; y++)
+            {
+                if(Tiles[x,y].unit.team == Teams.BLUE)
+                {
+                    BlueScore += Tiles[x, y].unit.energy;
+                }
+                else if(Tiles[x,y].unit.team == Teams.RED)
+                {
+                    RedScore += Tiles[x, y].unit.energy;
+                }
+            }
+        }
+
     }
 
     private Teams FindOpposingTeam(Teams team)

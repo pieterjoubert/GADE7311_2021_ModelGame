@@ -59,7 +59,7 @@ public class Board : MonoBehaviour
                 }
             
                 //LIGHT BLOCKERS
-                if(gameState.Tiles[x,z].lightValue)
+                if(!gameState.Tiles[x,z].lightValue)
                 {
                    Instantiate(lightBlockPrefab, new Vector3(x, 9f , z), Quaternion.identity);
 

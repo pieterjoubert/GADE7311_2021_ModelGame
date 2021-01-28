@@ -69,4 +69,5 @@ public class GameManager : MonoBehaviour
             currentTeam = humanPlayer;
         }
     }
-}
+
+   }
