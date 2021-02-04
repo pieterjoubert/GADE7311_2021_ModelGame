@@ -24,7 +24,6 @@ public class UnitSelected : MonoBehaviour
             int z = Convert.ToInt32(gameObject.name.Substring(5,1));
             Tile tile = board.GetGameState().Tiles[x, z];
             GameManager gameManager = GameObject.Find("Board").GetComponent<GameManager>();
-            gameManager.TakeTurn(tile, x, z);
-
+            StartCoroutine(gameManager.TakeTurn(tile, x, z));
     }  
 }

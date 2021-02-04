@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IAIPlayable 
 {
-    GameState Move(GameState gameState, Teams team);
+    GameState Move(GameState gameState, Teams team, int currentMove);
 }

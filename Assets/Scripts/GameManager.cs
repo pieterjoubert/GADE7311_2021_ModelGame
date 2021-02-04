@@ -2,34 +2,80 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
-public enum AIOptions
+public enum PlayerOptions
 {
+    HUMAN,
     RANDOM,
+    MINIMAX,
     NEURALNETWORK,
     EVOLUTIONARY,
     QLEARNING
 }
 public class GameManager : MonoBehaviour
 {
+    PlayerOptions currentAI;
     Teams currentTeam;
-    Teams humanPlayer;
-    Teams AIPlayer;
-    IAIPlayable AI;
+    IAIPlayable AI1;
+    IAIPlayable AI2;
+    int currentMove;
+    GameState prevGameState;
 
-    public AIOptions aiOptions; 
+    public PlayerOptions playerOptions1; 
+    public PlayerOptions playerOptions2;
+    public bool Simulate;
+    public int Simulations;
+    public string path;
+    public float simulationInterval;
+
     // Start is called before the first frame update
     void Start()
     {
-        currentTeam = Teams.RED; 
-        humanPlayer = Teams.RED;
-        AIPlayer = Teams.BLUE;
-
-        if(aiOptions == AIOptions.RANDOM)
+        if (!GameObject.Find("NNTrainer").GetComponent<NNTrainer>().train)
         {
-            AI = new RandomAIPlayer();
-        }
 
+            currentAI = playerOptions1;
+            currentTeam = Teams.RED;
+            currentMove = 0;
+
+            if (playerOptions1 == PlayerOptions.RANDOM)
+            {
+                AI1 = new RandomAIPlayer();
+            }
+            else if (playerOptions1 == PlayerOptions.MINIMAX)
+            {
+                AI1 = new AIMinimax();
+            }
+            else if (playerOptions1 == PlayerOptions.NEURALNETWORK)
+            {
+                AI1 = new NeuralNetworkAI();
+            }
+            else if (playerOptions1 == PlayerOptions.HUMAN)
+            {
+            }
+
+            if (playerOptions2 == PlayerOptions.RANDOM)
+            {
+                AI2 = new RandomAIPlayer();
+            }
+            else if (playerOptions2 == PlayerOptions.MINIMAX)
+            {
+                AI2 = new AIMinimax();
+            }
+            else if (playerOptions2 == PlayerOptions.NEURALNETWORK)
+            {
+                AI2 = new NeuralNetworkAI();
+            }
+            else if (playerOptions2 == PlayerOptions.HUMAN)
+            {
+            }
+
+            if (playerOptions1 != PlayerOptions.HUMAN)
+            {
+                StartCoroutine(TakeTurn(new Tile(), 0, 0));
+            }
+        }
     }
 
     // Update is called once per frame
@@ -38,36 +84,114 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void TakeTurn(Tile tile, int x, int z)
+    public IEnumerator TakeTurn(Tile tile, int x, int z)
     {
         Board board = GameObject.Find("Board").GetComponent<Board>();
-        if(currentTeam == humanPlayer) //HUMAN PLAYER MOVE
+        board.GetGameState().UpdateScore();
+        //Debug.Log(board.GetGameState().GetWinner());
+        if (Simulations > 0)
         {
-            if(tile.possibleMove == Teams.NONE)
+
+            if (board.GetGameState().GetWinner() == Teams.NONE)
             {
-                //Select Unit
-                if(tile.unit.team != Teams.NONE)
+                if (currentAI == PlayerOptions.HUMAN) //HUMAN PLAYER MOVE
                 {
-                    board.GetGameState().SetPossibleMoves(x, z, tile.unit.team, tile.unit.energy);
+                    if (tile.possibleMove == Teams.NONE)
+                    {
+                        //Select Unit
+                        if (tile.unit.team != Teams.NONE)
+                        {
+                            board.GetGameState().SetPossibleMoves(x, z, tile.unit.team, tile.unit.energy);
+                        }
+                    }
+                    else
+                    {
+                        //Make Move
+                        board.GetGameState().Move(x, z, true);
+                        currentAI = currentTeam == Teams.RED ? playerOptions2 : playerOptions1;
+                        currentTeam = currentTeam == Teams.RED ? Teams.BLUE : Teams.RED;
+                        if(!Simulate) board.Draw();
+                        currentMove++;
+                        //Debug.Log(board.GetGameState().OutputCurrentBoard());
+                        File.AppendAllText(path,board.GetGameState().OutputCurrentBoard());
+                        StartCoroutine(TakeTurn(tile, x, z));
+                    }
+                    board.Draw();
                 }
+                else if (currentAI != PlayerOptions.HUMAN) //AI PLAYER
+                {
+                    if (currentTeam == Teams.RED)
+                    {
+                        board.SetGameState(AI1.Move(board.GetGameState(), currentTeam, currentMove));
+                        if (!Simulate) board.Draw();
+                        yield return new WaitForSeconds(simulationInterval);
+                        currentTeam = Teams.BLUE;
+                        currentAI = playerOptions2;
+                        currentMove++;
+                        //Debug.Log(board.GetGameState().OutputCurrentBoard());
+                        File.AppendAllText(path,board.GetGameState().OutputCurrentBoard());
+                        if (playerOptions2 != PlayerOptions.HUMAN) StartCoroutine(TakeTurn(new Tile(), 0, 0));
+                    }
+                    else if (currentTeam == Teams.BLUE)
+                    {
+                        board.SetGameState(AI2.Move(board.GetGameState(), currentTeam, currentMove));
+                        if(!Simulate) board.Draw();
+                        yield return new WaitForSeconds(simulationInterval);
+                        currentTeam = Teams.RED;
+                        currentAI = playerOptions1;
+                        currentMove++;
+                        //Debug.Log(board.GetGameState().OutputCurrentBoard());
+                        File.AppendAllText(path,board.GetGameState().OutputCurrentBoard());
+                        if (playerOptions1 != PlayerOptions.HUMAN) StartCoroutine(TakeTurn(new Tile(), 0, 0));
+                    }
+                }
+
             }
             else
             {
-                //Make Move
-                board.GetGameState().Move(x, z);
-                currentTeam = AIPlayer; 
-                board.Draw();
-                TakeTurn(tile, x, z);
+                if (Simulate)
+                {
+                    board.Draw();
+                    board.SetGameState(new GameState(board.boardWidth, board.boardHeight, board.procGen, 6));
+
+                    currentAI = playerOptions1;
+                    currentTeam = Teams.RED;
+                    currentMove = 0;
+
+                    if(playerOptions1 == PlayerOptions.RANDOM)
+                    {
+                        AI1 = new RandomAIPlayer();
+                    }
+                    else if (playerOptions1 == PlayerOptions.MINIMAX)
+                    {
+                        AI1 = new AIMinimax();
+                    }
+                    else if (playerOptions1 == PlayerOptions.HUMAN)
+                    {
+                    }
+
+                    if(playerOptions2 == PlayerOptions.RANDOM)
+                    {
+                        AI2 = new RandomAIPlayer();
+                    }
+                    else if (playerOptions2 == PlayerOptions.MINIMAX)
+                    {
+                        AI2 = new AIMinimax();
+                    }
+                    else if (playerOptions2 == PlayerOptions.HUMAN)
+                    {
+                    }
+
+                    if(playerOptions1 != PlayerOptions.HUMAN)
+                    {
+                        StartCoroutine(TakeTurn(new Tile(), 0, 0));
+                    }
+
+                    Simulations--;
+                }
             }
-            board.Draw();
         }
-        else if(currentTeam == AIPlayer) //AI PLAYER
-        {
-            Debug.Log("AI Moving...");
-            board.SetGameState(AI.Move(board.GetGameState(), AIPlayer));
-            board.Draw();
-            currentTeam = humanPlayer;
-        }
+
     }
 
    }
