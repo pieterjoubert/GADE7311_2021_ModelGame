@@ -6,7 +6,6 @@ public class RandomAIPlayer : ScriptableObject, IAIPlayable
 {
     public GameState Move(GameState gameState, Teams team, int currentMove)
     {
-        //DO COOL AI STUFF HERE
         //STEP 1: CHOOSE (RANDOM) VALID PIECE TO MOVE
         List<Tile> possibleTiles = new List<Tile>();
         for(int x = 0; x < gameState.Width; x++)

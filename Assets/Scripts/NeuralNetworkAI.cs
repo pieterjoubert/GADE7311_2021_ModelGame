@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NeuralNetworkAI : IAIPlayable 
 {
-    NeuralNetwork neuralNetwork = GameObject.Find("NNTrainer").GetComponent<NNTrainer>().neuralNetwork; //new NeuralNetwork(inputLayerSize, hiddenLayersSizes, outputLayerSize, learningRate, momentum);
+    NeuralNetwork neuralNetwork;
     static double learningRate = 0.0085;
     static double momentum = 0.005;
 
@@ -16,7 +16,8 @@ public class NeuralNetworkAI : IAIPlayable
 
     public GameState Move(GameState gameState, Teams team, int currentMove)
     {
-        //DO COOL NN STUFF HERE
+        //DO COOL NN STUFF HERE 
+        neuralNetwork = GameObject.Find("NNTrainer").GetComponent<NNTrainer>().neuralNetwork; //Get Trained NN
         double[] results = neuralNetwork.Compute(gameState.OutputCurrentBoardAsArray());
 
         Move move = gameState.GetMoveFromNN(results);

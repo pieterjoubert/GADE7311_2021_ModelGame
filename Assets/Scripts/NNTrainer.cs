@@ -19,13 +19,13 @@ public class NNTrainer : MonoBehaviour
     static  int numTrainingRecords = 50000;
     static int numTestRecords = 1000;
 
-    static double learningRate = 0.0085;
-    static double momentum = 0.005;
+    public double learningRate = 0.0085;
+    public double momentum = 0.005;
 
-    bool trained = false;
+    public bool trained = false;
 
     static int inputLayerSize = 64; //8 * 8 board
-    static int[] hiddenLayersSizes = {128, 64};
+    public int[] hiddenLayersSizes = {128, 64};
     static int outputLayerSize = 32; //8 * 4 for possible moves
 
     public NeuralNetwork neuralNetwork;

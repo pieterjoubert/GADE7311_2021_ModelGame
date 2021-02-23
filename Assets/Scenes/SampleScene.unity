@@ -496,6 +496,9 @@ MonoBehaviour:
   train: 1
   trainPath: output.txt
   testPath: output2.txt
+  learningRate: 0.0085
+  momentum: 0.005
+  hiddenLayersSizes: 8000000040000000
 --- !u!4 &1149037540
 Transform:
   m_ObjectHideFlags: 0

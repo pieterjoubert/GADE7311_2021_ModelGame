@@ -13,6 +13,7 @@ public enum PlayerOptions
     EVOLUTIONARY,
     QLEARNING
 }
+
 public class GameManager : MonoBehaviour
 {
     PlayerOptions currentAI;
@@ -32,8 +33,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!GameObject.Find("NNTrainer").GetComponent<NNTrainer>().train)
-        {
+        //if (GameObject.Find("NNTrainer").GetComponent<NNTrainer>().trained)
+       // {
 
             currentAI = playerOptions1;
             currentTeam = Teams.RED;
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(TakeTurn(new Tile(), 0, 0));
             }
-        }
+      //  }
     }
 
     // Update is called once per frame

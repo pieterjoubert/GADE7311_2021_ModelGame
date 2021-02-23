@@ -164,8 +164,6 @@ public class GameState : ScriptableObject
             }
         }
 
-
-
     }
 
     void PlacePieces()
@@ -186,12 +184,12 @@ public class GameState : ScriptableObject
     public void ClearPossibleMoves()
     {
         for(int x = 0; x < Width; x++)
+        {
+            for(int y = 0; y < Height; y++)
             {
-                for(int y = 0; y < Height; y++)
-                {
-                    Tiles[x, y].possibleMove = Teams.NONE;
-                }
+                Tiles[x, y].possibleMove = Teams.NONE;
             }
+        }
 
     }
 
@@ -199,6 +197,7 @@ public class GameState : ScriptableObject
     {
         //CAP ENERGY
         if (energy > 9) energy = 9;
+
         //CLEAR CURRENT MOVES
         ClearPossibleMoves();
 
@@ -260,6 +259,7 @@ public class GameState : ScriptableObject
     public void Move(int x, int z, bool realMove)
     {
         prevState = this.Duplicate();
+
         int distance = Mathf.Abs(x - SelectedX) + Mathf.Abs(z - SelectedZ);
         if (Tiles[x, z].unit.team == Teams.NONE)
         {
