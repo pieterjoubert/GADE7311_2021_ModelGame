@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerOptions1: 0
-  playerOptions2: 3
+  playerOptions2: 1
   Simulate: 0
   Simulations: 1000
   path: output.txt
@@ -493,12 +493,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a44589238eed8498042649f0107e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  train: 1
+  train: 0
   trainPath: output.txt
   testPath: output2.txt
   learningRate: 0.0085
   momentum: 0.005
-  hiddenLayersSizes: 8000000040000000
+  trained: 0
+  hiddenLayersSizes: 0002000000010000
 --- !u!4 &1149037540
 Transform:
   m_ObjectHideFlags: 0
